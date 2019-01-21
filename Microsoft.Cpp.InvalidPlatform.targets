@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 ***********************************************************************************************
 Microsoft.Cpp.InvalidPlatform.targets
@@ -15,10 +16,10 @@ Copyright (C) Microsoft Corporation. All rights reserved.
 
 <Project ToolsVersion="4.0" InitialTargets="InvalidPlatformError" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-    <UsingTask TaskName="VCMessage" AssemblyName="Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<UsingTask TaskName="VCMessage" AssemblyName="Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
 
-    <Target Name="InvalidPlatformError">
-      <VCMessage Condition="'$(BuildingInsideVisualStudio)' == 'true'" Code="MSB8006" Type="Error" Arguments="$(MSBuildProjectFile);$(Platform)" />
-      <VCMessage Condition="'$(BuildingInsideVisualStudio)' != 'true'" Code="MSB8007" Type="Error" Arguments="$(MSBuildProjectFile);$(Platform)" />
-    </Target>
+	<Target Name="InvalidPlatformError">
+		<VCMessage Condition="'$(BuildingInsideVisualStudio)' == 'true'" Code="MSB8006" Type="Error" Arguments="$(MSBuildProjectFile);$(Platform)" />
+		<VCMessage Condition="'$(BuildingInsideVisualStudio)' != 'true'" Code="MSB8007" Type="Error" Arguments="$(MSBuildProjectFile);$(Platform)" />
+	</Target>
 </Project>

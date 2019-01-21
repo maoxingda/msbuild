@@ -1,4 +1,5 @@
-﻿<!--
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
 ***********************************************************************************************
 Microsoft.Cpp.Win32.targets
 
@@ -14,47 +15,47 @@ Copyright (C) Microsoft Corporation. All rights reserved.
 -->
 
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(VCTargetsPath)\Platforms\Win32\ImportBefore\*.targets" Condition="Exists('$(VCTargetsPath)\Platforms\Win32\ImportBefore')" />
-  <Import Project="$(VCTargetsPath)\Microsoft.CppCommon.targets" />
+	<Import Project="$(VCTargetsPath)\Platforms\Win32\ImportBefore\*.targets" Condition="Exists('$(VCTargetsPath)\Platforms\Win32\ImportBefore')" />
+	<Import Project="$(VCTargetsPath)\Microsoft.CppCommon.targets" />
 
-  <UsingTask TaskName="CL"   AssemblyName="Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <UsingTask TaskName="Link" AssemblyName="Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <UsingTask TaskName="VCMessage" AssemblyName="Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<UsingTask TaskName="CL"   AssemblyName="Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<UsingTask TaskName="Link" AssemblyName="Microsoft.Build.CppTasks.Win32, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+	<UsingTask TaskName="VCMessage" AssemblyName="Microsoft.Build.CppTasks.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
 
 
-  <PropertyGroup>
-    <!-- Enable incremental build by enable file tracking in tasks-->
-    <TrackFileAccess Condition="'$(TrackFileAccess)' == ''">true</TrackFileAccess>
-  </PropertyGroup>
+	<PropertyGroup>
+		<!-- Enable incremental build by enable file tracking in tasks-->
+		<TrackFileAccess Condition="'$(TrackFileAccess)' == ''">true</TrackFileAccess>
+	</PropertyGroup>
 
-  <!-- *******************************************************************************************
+	<!-- *******************************************************************************************
         CLCompile
        ******************************************************************************************* -->
 
-  <Target Name="ClCompile"
+	<Target Name="ClCompile"
           Condition="'@(ClCompile)' != ''"
           DependsOnTargets="SelectClCompile">
-    <ItemGroup>
-      <ClCompile>
-        <PrecompiledHeaderOutputFile  Condition="'%(ClCompile.PrecompiledHeader)' == 'NotUsing' or '%(ClCompile.PrecompiledHeader)' == ''"></PrecompiledHeaderOutputFile>
-        <PrecompiledHeaderOutputFile  Condition="'%(ClCompile.PrecompiledHeader)' != 'NotUsing' and '$(RunCodeAnalysisOnce)'=='true' and '%(ClCompile.PrecompiledHeader)' != ''">%(ClCompile.PrecompiledHeaderOutputFile).codeanalysis</PrecompiledHeaderOutputFile>
-        <PrecompiledHeaderFile        Condition="'%(ClCompile.PrecompiledHeader)' == 'NotUsing' or '%(ClCompile.PrecompiledHeader)' == ''"></PrecompiledHeaderFile>
-        <AssemblerListingLocation     Condition="'%(ClCompile.AssemblerOutput)' == 'NoListing' or '%(ClCompile.AssemblerOutput)' == ''"></AssemblerListingLocation>
-        <CompileAs                    Condition="'%(ClCompile.CompileAs)' == 'Default' and '%(ClCompile.Extension)' == '.c'">CompileAsC</CompileAs>
-        <CompileAs                    Condition="'%(ClCompile.CompileAs)' == 'Default' and '%(ClCompile.Extension)' != '.c'">CompileAsCpp</CompileAs>
-        <MinimalRebuildFromTracking   Condition="'$(BuildType)' != 'Build' or '$(ForceRebuild)' == 'true'">false</MinimalRebuildFromTracking>
-      </ClCompile>
-    </ItemGroup>
+		<ItemGroup>
+			<ClCompile>
+				<PrecompiledHeaderOutputFile  Condition="'%(ClCompile.PrecompiledHeader)' == 'NotUsing' or '%(ClCompile.PrecompiledHeader)' == ''"/>
+				<PrecompiledHeaderOutputFile  Condition="'%(ClCompile.PrecompiledHeader)' != 'NotUsing' and '$(RunCodeAnalysisOnce)'=='true' and '%(ClCompile.PrecompiledHeader)' != ''">%(ClCompile.PrecompiledHeaderOutputFile).codeanalysis</PrecompiledHeaderOutputFile>
+				<PrecompiledHeaderFile        Condition="'%(ClCompile.PrecompiledHeader)' == 'NotUsing' or '%(ClCompile.PrecompiledHeader)' == ''"/>
+				<AssemblerListingLocation     Condition="'%(ClCompile.AssemblerOutput)' == 'NoListing' or '%(ClCompile.AssemblerOutput)' == ''"/>
+				<CompileAs                    Condition="'%(ClCompile.CompileAs)' == 'Default' and '%(ClCompile.Extension)' == '.c'">CompileAsC</CompileAs>
+				<CompileAs                    Condition="'%(ClCompile.CompileAs)' == 'Default' and '%(ClCompile.Extension)' != '.c'">CompileAsCpp</CompileAs>
+				<MinimalRebuildFromTracking   Condition="'$(BuildType)' != 'Build' or '$(ForceRebuild)' == 'true'">false</MinimalRebuildFromTracking>
+			</ClCompile>
+		</ItemGroup>
 
-    <PropertyGroup>
-      <CLToolArchitecture Condition="'$(CLToolArchitecture)' == ''">$(DefaultToolArchitecture)</CLToolArchitecture>
-    </PropertyGroup>
+		<PropertyGroup>
+			<CLToolArchitecture Condition="'$(CLToolArchitecture)' == ''">$(DefaultToolArchitecture)</CLToolArchitecture>
+		</PropertyGroup>
 
-    <Delete Condition="'%(ClCompile.DebugInformationFormat)' != '' and '%(ClCompile.DebugInformationFormat)' != 'OldStyle' and '%(ClCompile.ProgramDataBaseFileName)' != '' and !Exists(%(ClCompile.ProgramDataBaseFileName))"
+		<Delete Condition="'%(ClCompile.DebugInformationFormat)' != '' and '%(ClCompile.DebugInformationFormat)' != 'OldStyle' and '%(ClCompile.ProgramDataBaseFileName)' != '' and !Exists(%(ClCompile.ProgramDataBaseFileName))"
             Files="%(ClCompile.PrecompiledHeaderOutputFile)" />
 
-    <!-- Precompiled headers - need to build them first -->
-    <CL Condition="'%(ClCompile.PrecompiledHeader)' == 'Create' and '%(ClCompile.ExcludedFromBuild)'!='true'"
+		<!-- Precompiled headers - need to build them first -->
+		<CL Condition="'%(ClCompile.PrecompiledHeader)' == 'Create' and '%(ClCompile.ExcludedFromBuild)'!='true'"
         BuildingInIDE                      ="$(BuildingInsideVisualStudio)"
         Sources                            ="@(ClCompile)"
 
@@ -141,10 +142,10 @@ Copyright (C) Microsoft Corporation. All rights reserved.
         AcceptableNonZeroExitCodes         ="%(ClCompile.AcceptableNonZeroExitCodes)"
         YieldDuringToolExecution           ="$(ClYieldDuringToolExecution)"
     >
-    </CL>
+		</CL>
 
-    <!-- Rest of the sources -->
-    <CL Condition="'%(ClCompile.PrecompiledHeader)' != 'Create' and '%(ClCompile.ExcludedFromBuild)'!='true'"
+		<!-- Rest of the sources -->
+		<CL Condition="'%(ClCompile.PrecompiledHeader)' != 'Create' and '%(ClCompile.ExcludedFromBuild)'!='true'"
         BuildingInIDE                      ="$(BuildingInsideVisualStudio)"
         Sources                            ="@(ClCompile)"
 
@@ -231,41 +232,41 @@ Copyright (C) Microsoft Corporation. All rights reserved.
         AcceptableNonZeroExitCodes         ="%(ClCompile.AcceptableNonZeroExitCodes)"
         YieldDuringToolExecution           ="$(ClYieldDuringToolExecution)"
     >
-    </CL>
+		</CL>
 
-  </Target>
+	</Target>
 
-  <!-- *******************************************************************************************
+	<!-- *******************************************************************************************
         Link
        ******************************************************************************************* -->
 
-  <Target Name="Link"
+	<Target Name="Link"
           Condition="'@(Link)' != ''">
 
-    <ItemGroup>
-      <_EmbedManagedResourceFile Include="@(Link->Metadata('EmbedManagedResourceFile')->Distinct())" />
-      <_EmbedManagedResourceFile Include="@(Link->Metadata('AddModuleNamesToAssembly')->Distinct())" />
-      <_EmbedManagedResourceFile Condition="'%(EmbeddedResource.LogicalName)' == '' and '%(EmbeddedResource.WithCulture)' != 'true'" Include="@(EmbeddedResource->'$(IntermediateOutputPath)%(ManifestResourceName).resources')" />
-      <_EmbedManagedResourceFile Condition="'%(EmbeddedResource.LogicalName)' != '' and '%(EmbeddedResource.WithCulture)' != 'true'" Include="@(EmbeddedResource->'$(IntermediateOutputPath)%(ManifestResourceName).resources,%(LogicalName)')" />
-    </ItemGroup>
+		<ItemGroup>
+			<_EmbedManagedResourceFile Include="@(Link->Metadata('EmbedManagedResourceFile')->Distinct())" />
+			<_EmbedManagedResourceFile Include="@(Link->Metadata('AddModuleNamesToAssembly')->Distinct())" />
+			<_EmbedManagedResourceFile Condition="'%(EmbeddedResource.LogicalName)' == '' and '%(EmbeddedResource.WithCulture)' != 'true'" Include="@(EmbeddedResource->'$(IntermediateOutputPath)%(ManifestResourceName).resources')" />
+			<_EmbedManagedResourceFile Condition="'%(EmbeddedResource.LogicalName)' != '' and '%(EmbeddedResource.WithCulture)' != 'true'" Include="@(EmbeddedResource->'$(IntermediateOutputPath)%(ManifestResourceName).resources,%(LogicalName)')" />
+		</ItemGroup>
 
-    <PropertyGroup>
-      <Link_MinimalRebuildFromTracking Condition="'@(Link->AnyHaveMetadataValue('MinimalRebuildFromTracking', 'false'))' == 'true'">false</Link_MinimalRebuildFromTracking>
-      <Link_MinimalRebuildFromTracking Condition="'$(BuildType)' != 'Build' or '$(ForceRebuild)' == 'true'" >false</Link_MinimalRebuildFromTracking>
-      <Link_MinimalRebuildFromTracking Condition="'$(Link_MinimalRebuildFromTracking)' == ''">true</Link_MinimalRebuildFromTracking>
-      <LinkToolArchitecture Condition="'$(LinkToolArchitecture)' == ''">$(DefaultToolArchitecture)</LinkToolArchitecture>
-      <LinkYieldDuringToolExecution Condition="'$(LinkYieldDuringToolExecution)' == '' and '%(Link.LinkTimeCodeGeneration)' == 'UseLinkTimeCodeGeneration'">true</LinkYieldDuringToolExecution>
-    </PropertyGroup>
+		<PropertyGroup>
+			<Link_MinimalRebuildFromTracking Condition="'@(Link->AnyHaveMetadataValue('MinimalRebuildFromTracking', 'false'))' == 'true'">false</Link_MinimalRebuildFromTracking>
+			<Link_MinimalRebuildFromTracking Condition="'$(BuildType)' != 'Build' or '$(ForceRebuild)' == 'true'" >false</Link_MinimalRebuildFromTracking>
+			<Link_MinimalRebuildFromTracking Condition="'$(Link_MinimalRebuildFromTracking)' == ''">true</Link_MinimalRebuildFromTracking>
+			<LinkToolArchitecture Condition="'$(LinkToolArchitecture)' == ''">$(DefaultToolArchitecture)</LinkToolArchitecture>
+			<LinkYieldDuringToolExecution Condition="'$(LinkYieldDuringToolExecution)' == '' and '%(Link.LinkTimeCodeGeneration)' == 'UseLinkTimeCodeGeneration'">true</LinkYieldDuringToolExecution>
+		</PropertyGroup>
 
-    <ItemGroup>
-      <Link>
-        <ProfileGuidedDatabase Condition="'%(Link.LinkTimeCodeGeneration)' != 'PGOptimization' and
+		<ItemGroup>
+			<Link>
+				<ProfileGuidedDatabase Condition="'%(Link.LinkTimeCodeGeneration)' != 'PGOptimization' and
                                           '%(Link.LinkTimeCodeGeneration)' != 'PGUpdate' and
-                                          '%(Link.LinkTimeCodeGeneration)' != 'PGInstrument'"></ProfileGuidedDatabase>
-      </Link>
-    </ItemGroup>
+                                          '%(Link.LinkTimeCodeGeneration)' != 'PGInstrument'"/>
+			</Link>
+		</ItemGroup>
 
-    <Link
+		<Link
         BuildingInIDE                  ="$(BuildingInsideVisualStudio)"
         Sources                        ="@(Link)"
 
@@ -368,28 +369,28 @@ Copyright (C) Microsoft Corporation. All rights reserved.
         AcceptableNonZeroExitCodes     ="%(Link.AcceptableNonZeroExitCodes)"
         YieldDuringToolExecution       ="$(LinkYieldDuringToolExecution)"
     >
-      <Output TaskParameter="SkippedExecution" PropertyName="LinkSkippedExecution" />
-    </Link>
+			<Output TaskParameter="SkippedExecution" PropertyName="LinkSkippedExecution" />
+		</Link>
 
-    <Message Text="$(MSBuildProjectFile) -&gt; $(TargetPath)" Importance="High" Condition="'$(EmbedManifestBy)' != 'LINK'"/>
-  </Target>
+		<Message Text="$(MSBuildProjectFile) -&gt; $(TargetPath)" Importance="High" Condition="'$(EmbedManifestBy)' != 'LINK'"/>
+	</Target>
 
-  <Target Name="LinkEmbedManifest"
+	<Target Name="LinkEmbedManifest"
           Condition="'@(Link)' != '' AND '$(EmbedManifestBy)'=='LINK' AND '$(LinkSkippedExecution)' != 'true'">
 
-    <PropertyGroup>
-      <LinkToolArchitecture Condition="'$(LinkToolArchitecture)' == ''">$(DefaultToolArchitecture)</LinkToolArchitecture>
-    </PropertyGroup>
+		<PropertyGroup>
+			<LinkToolArchitecture Condition="'$(LinkToolArchitecture)' == ''">$(DefaultToolArchitecture)</LinkToolArchitecture>
+		</PropertyGroup>
 
-    <ItemGroup>
-      <Link>
-        <ProfileGuidedDatabase Condition="'%(Link.LinkTimeCodeGeneration)' != 'PGOptimization' and
+		<ItemGroup>
+			<Link>
+				<ProfileGuidedDatabase Condition="'%(Link.LinkTimeCodeGeneration)' != 'PGOptimization' and
                                           '%(Link.LinkTimeCodeGeneration)' != 'PGUpdate' and
-                                          '%(Link.LinkTimeCodeGeneration)' != 'PGInstrument'"></ProfileGuidedDatabase>
-      </Link>
-    </ItemGroup>
+                                          '%(Link.LinkTimeCodeGeneration)' != 'PGInstrument'"/>
+			</Link>
+		</ItemGroup>
 
-    <Link
+		<Link
         BuildingInIDE                  ="$(BuildingInsideVisualStudio)"
         Sources                        ="@(Link)"
 
@@ -492,27 +493,27 @@ Copyright (C) Microsoft Corporation. All rights reserved.
         AcceptableNonZeroExitCodes     ="%(Link.AcceptableNonZeroExitCodes)"
         YieldDuringToolExecution       ="$(LinkYieldDuringToolExecution)"
     >
-    </Link>
+		</Link>
 
-    <Message Text="$(MSBuildProjectFile) -&gt; $(TargetPath)" Importance="High" />
-  </Target>
+		<Message Text="$(MSBuildProjectFile) -&gt; $(TargetPath)" Importance="High" />
+	</Target>
 
 
-  <PropertyGroup>
-    <PrepareForBuildDependsOn>PlatformPrepareForBuild;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PrepareForBuildDependsOn>PlatformPrepareForBuild;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
+	</PropertyGroup>
 
-  <!-- *******************************************************************************************
+	<!-- *******************************************************************************************
         PlatformPrepareForBuild target
        ******************************************************************************************* -->
-  <Target Name="PlatformPrepareForBuild" DependsOnTargets="$(PlatformPrepareForBuildDependsOn)">
+	<Target Name="PlatformPrepareForBuild" DependsOnTargets="$(PlatformPrepareForBuildDependsOn)">
 
-    <!-- Error out if the project references a missing platform toolset -->
-    <VCMessage Code="MSB8008" Type="Error" Arguments="$(PlatformToolset)" Condition="!(exists('$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\$(PlatformToolset)\Microsoft.Cpp.Win32.$(PlatformToolset).targets'))"/>
-  </Target>
+		<!-- Error out if the project references a missing platform toolset -->
+		<VCMessage Code="MSB8008" Type="Error" Arguments="$(PlatformToolset)" Condition="!(exists('$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\$(PlatformToolset)\Microsoft.Cpp.Win32.$(PlatformToolset).targets'))"/>
+	</Target>
 
-  <Import Project="$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\$(PlatformToolset)\Microsoft.Cpp.Win32.$(PlatformToolset).targets" Condition="(exists('$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\$(PlatformToolset)\Microsoft.Cpp.Win32.$(PlatformToolset).targets'))" />
-  <Import Project="$(VCTargetsPath)\Platforms\Win32\ImportAfter\*.targets" Condition="Exists('$(VCTargetsPath)\Platforms\Win32\ImportAfter')" />
+	<Import Project="$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\$(PlatformToolset)\Microsoft.Cpp.Win32.$(PlatformToolset).targets" Condition="(exists('$(VCTargetsPath)\Platforms\Win32\PlatformToolsets\$(PlatformToolset)\Microsoft.Cpp.Win32.$(PlatformToolset).targets'))" />
+	<Import Project="$(VCTargetsPath)\Platforms\Win32\ImportAfter\*.targets" Condition="Exists('$(VCTargetsPath)\Platforms\Win32\ImportAfter')" />
 </Project>
 
 
